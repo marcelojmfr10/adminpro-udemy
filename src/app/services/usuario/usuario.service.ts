@@ -103,8 +103,12 @@ export class UsuarioService {
     return this.http.put(url, usuario).pipe(
             map((resp: any) => {
               // this.usuario = resp.usuario;
-              const usuarioDB: Usuario = resp.usuario;
-              this.guardarStorage(usuarioDB._id, this.token, usuarioDB);
+
+              if (usuario._id === this.usuario._id) {
+                const usuarioDB: Usuario = resp.usuario;
+                this.guardarStorage(usuarioDB._id, this.token, usuarioDB);
+              }
+
               Swal.fire({
                 icon: 'success',
                 title: 'Usuario actualizado',
@@ -132,5 +136,30 @@ export class UsuarioService {
             .catch(resp => {
               console.error(resp);
             });
+  }
+
+  cargarUsuarios(desde: number = 0) {
+    const url = `${URL_SERVICIOS}/usuario?desde=${desde}`;
+    return this.http.get(url);
+  }
+
+  buscarUsuarios(termino: string) {
+    const url = `${URL_SERVICIOS}/busqueda/coleccion/usuarios/${termino}`;
+    return this.http.get(url).pipe(map((resp: any) => resp.usuarios));
+  }
+
+  borrarUsuario(id: string) {
+    const url = `${URL_SERVICIOS}/usuario/${id}?token=${this.token}`;
+    return this.http.delete(url).pipe(
+      map( resp => {
+        Swal.fire({
+          title: 'Usuario borrado',
+          text: `Usuario borrado correctamente`,
+          icon: 'success'
+        });
+
+        return true;
+      })
+    );
   }
 }
