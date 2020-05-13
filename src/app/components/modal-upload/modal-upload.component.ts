@@ -15,6 +15,7 @@ export class ModalUploadComponent implements OnInit {
   // oculto: string = '';
   imagenSubir: File;
   imagenTemp: string | ArrayBuffer;
+  imagenDefecto: string = 'xxx';
 
   constructor(public subirArchivoService: SubirArchivoService,
               public modalUploadService: ModalUploadService) {
