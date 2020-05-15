@@ -2,6 +2,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { LoginGuardGuard } from '../services/guards/login-guard.guard';
 import { AdminGuard } from '../services/guards/admin.guard';
+import { VerificaTokenGuard } from '../services/guards/verifica-token.guard';
 
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -17,14 +18,19 @@ import { MedicosComponent } from './medicos/medicos.component';
 import { MedicoComponent } from './medicos/medico.component';
 import { BusquedaComponent } from './busqueda/busqueda.component';
 
-
 const PAGES_ROUTES: Routes = [
-    {
-        path: '',
-        component: PagesComponent,
-        canActivate: [LoginGuardGuard],
-        children: [
-            { path: 'dashboard', component: DashboardComponent, data: { titulo: 'Dashboard' }},
+    // SE COMENTÓ POR EL LAZY LOAD
+    // {
+    //     path: '',
+    //     component: PagesComponent,
+    //     canActivate: [LoginGuardGuard],
+    //     children: [
+            {
+                path: 'dashboard',
+                component: DashboardComponent,
+                canActivate: [VerificaTokenGuard],
+                data: { titulo: 'Dashboard' }
+            },
             { path: 'progress', component: ProgressComponent, data: { titulo: 'Progress' }},
             { path: 'graficas1', component: Graficas1Component, data: { titulo: 'Gráficas' }},
             { path: 'promesas', component: PromesasComponent, data: { titulo: 'Promesas' }},
@@ -42,8 +48,8 @@ const PAGES_ROUTES: Routes = [
             { path: 'medicos', component: MedicosComponent, data: { titulo: 'Mantenimiento de Médicos' }},
             { path: 'medico/:id', component: MedicoComponent, data: { titulo: 'Actualizar Médico' }},
             { path: '', pathMatch: 'full', redirectTo: 'dashboard'},
-        ]
-    }
+    //     ]
+    // }
 ];
 
 export const PAGES_ROUTING = RouterModule.forChild(PAGES_ROUTES);
